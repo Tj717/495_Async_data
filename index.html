@@ -132,13 +132,12 @@
                 });
                 map.addLayer({
                     'id': 'uni-layer',
-                    'type': 'circle',
+                    'type': 'symbol',
                     'source': 'uni',
-                    'paint': {
-                        'circle-radius': 8,
-                        'circle-stroke-width': 2,
-                        'circle-color': 'red',
-                        'circle-stroke-color': 'white'
+                    'layout': {
+                        'icon-image': 'college-15',
+                        'icon-allow-overlap': true,
+                        'icon-size': 2
                     }
                 });
                 map.addSource('city-limits', {
