@@ -2,4 +2,4 @@
 
 Seattle's Top 6 Universities (according to usnews.com) Map 
 
-Access it [here](https://tj717.github.io/495-Async-data)
+Access it [here](https://tj717.github.io/495_Async_data/)
