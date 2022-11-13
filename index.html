@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Load data from an external GeoJSON file</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            display: flex;
+            height: 100vh;
+            flex-direction: row;
+            align-items: stretch;
+        }
+
+        #table {
+            flex-basis: 500px;
+            overflow-y: scroll;
+        }
+
+        #map {
+            flex-grow: 1;
+        }
+
+        button {
+            margin-bottom: 10px;
+        }
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            text-align: center;
+            padding: 16px;
+        }
+
+        #rank {
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <main id="container">
+        <div id="table">
+
+            <h2>Seattle Universities List</h2>
+            <button onclick="sortTable()">Sort by Ranking</button>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Local Ranking (usnews.com)</th>
+                    <th>Description</th>
+                </tr>
+            </table>
+
+        </div>
+        <div id="map"></div>
+
+    </main>
+    <script>
+        mapboxgl.accessToken =
+            'pk.eyJ1IjoidGoyMDIyMjIiLCJhIjoiY2xhMWk3dTdoMDAyczNubmM4cW5wcjczaCJ9._xPR8eZ1wQpDOCkm7f-vEg';
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/streets-v11', // style URL
+            zoom: 8.5, // starting zoom
+            center: [-122.3321, 47.462] // starting center
+        });
+
+
+        async function geojsonFetch() {
+            let response = await fetch('uni.geojson');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            let uni = await response.json();
+            response = await fetch('city-limits.geojson');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            let sea = await response.json();
+
+            var table = document.getElementsByTagName("table");
+            for (let i = 0; i < uni.features.length; i++) {
+                // console.log(uni.features[i].properties.id);
+
+                var lng = await uni.features[i].geometry.coordinates[0];
+                var lat = await uni.features[i].geometry.coordinates[1];
+
+                // Create an empty <tr> element and add it to the 1st position of the table:
+                var row = table[0].insertRow(-1);
+
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                cell2.id = "rank";
+                var cell3 = row.insertCell(2);
+                cell1.innerHTML = await uni.features[i].properties.name;
+                cell2.innerHTML = await uni.features[i].properties.ranking;
+                cell3.innerHTML = await uni.features[i].properties.description;
+            }
+
+            map.on('load', () => {
+                map.addSource('uni', {
+                    type: 'geojson',
+                    data: uni
+                });
+                map.addLayer({
+                    'id': 'uni-layer',
+                    'type': 'circle',
+                    'source': 'uni',
+                    'paint': {
+                        'circle-radius': 8,
+                        'circle-stroke-width': 2,
+                        'circle-color': 'red',
+                        'circle-stroke-color': 'white'
+                    }
+                });
+                map.addSource('city-limits', {
+                    type: 'geojson',
+                    data: sea
+                });
+
+                map.addLayer({
+                    'id': 'sea-layer',
+                    'type': 'fill',
+                    'source': 'city-limits',
+                    'paint': {
+                        'fill-color': 'purple', // blue color fill
+                        'fill-opacity': 0.1
+                    }
+                });
+            });
+        }
+
+        geojsonFetch();
+            // .catch(e => {
+            //     console.log('There has been a problem with your fetch operation: ' + e.message);
+            // });
+
+        function sortTable() {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementsByTagName("table")[0];
+            switching = true;
+            /*Make a loop that will continue until
+            no switching has been done:*/
+            while (switching) {
+                //start by saying: no switching is done:
+                switching = false;
+                rows = table.rows;
+                /*Loop through all table rows (except the
+                first, which contains table headers):*/
+                for (i = 1; i < (rows.length - 1); i++) {
+                    //start by saying there should be no switching:
+                    shouldSwitch = false;
+                    /*Get the two elements you want to compare,
+                    one from current row and one from the next:*/
+                    x = parseInt(rows[i].getElementsByTagName("td")[1].innerHTML);
+                    y = parseInt(rows[i + 1].getElementsByTagName("td")[1].innerHTML);
+                    //check if the two rows should switch place:
+                    if (x > y) {
+                        //if so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+                if (shouldSwitch) {
+                    /*If a switch has been marked, make the switch
+                    and mark that a switch has been done:*/
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+{
+    "type": "FeatureCollection",
+    "name": "uni",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.1907,
+                    47.759
+                ]
+            },
+            "properties": {
+                "name": "University of Washington Bothell",
+                "ranking": "6",
+                "description": "#21 in Reional Universities West"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.3178,
+                    47.6092
+                ]
+            },
+            "properties": {
+                "name": "Seattle University",
+                "ranking": "2",
+                "description": "#137 in National Universities"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.4814,
+                    47.2617
+                ]
+            },
+            "properties": {
+                "name": "University of Puget Sound",
+                "ranking": "4",
+                "description": "#85 in National Liberal Arts Colleges"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.3035,
+                    47.6553
+                ]
+            },
+            "properties": {
+                "name": "University of Washington",
+                "ranking": "1",
+                "description": "#55 in National Universities"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.4437,
+                    47.1452
+                ]
+            },
+            "properties": {
+                "name": "Pacific Lutheran University",
+                "ranking": "5",
+                "description": "#11 in Regional Universities West"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.3619,
+                    47.6492
+                ]
+            },
+            "properties": {
+                "name": "Seattle Pacific University",
+                "ranking": "3",
+                "description": "#219 in National Universities"
+            }
+        }
+    ]
+}
