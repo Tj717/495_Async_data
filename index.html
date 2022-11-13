@@ -95,11 +95,18 @@
 
 
         async function geojsonFetch() {
+            // Data source: compiled it by myself with data from 
+            // https://www.usnews.com/best-colleges/rankings/seattle
+
             let response = await fetch('assets/uni.geojson');
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             let uni = await response.json();
+
+            // Data source: 
+            // https://github.com/seattleio/seattle-boundaries-data/blob/master/data/city-limits.geojson
+
             response = await fetch('assets/city-limits.geojson');
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
